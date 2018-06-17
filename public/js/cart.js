@@ -15,8 +15,7 @@ function AddProduct(e){
     type: "post",
     data: { json: JSON.stringify(DataToSend) },
     dataType: "json",
-    success: UpdateCart,
-    fail: function() {          alert( "error" );          }
+    success: UpdateCart
   });
 }
 
@@ -30,7 +29,6 @@ function DeleteProduct(e){
     type: "post",
     data: { json: JSON.stringify(DataToSend) },
     dataType: "json",
-    success: UpdateCart,
-    fail: function() {          alert( "error" );          }
+    success: UpdateCart
   });
 }

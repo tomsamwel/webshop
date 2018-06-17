@@ -22,7 +22,7 @@ switch($json['command']){
 // Function Below
 
 function AddProduct($json){
-  Cart::addToCart( $json['id'], 1 );
+  Cart::addToCart( $json['id']);
 
   ob_start();                        // capture html from bucket partial
   require __DIR__.'/../views/partials/bucket.php';

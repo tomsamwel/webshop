@@ -1,6 +1,10 @@
 body {
 	padding-top: 56px;
 }
+.oneline {
+    white-space: nowrap;
+    overflow: hidden;
+}
 aside.bucket {
 	width: 30%;
 	padding: 10px;
