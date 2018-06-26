@@ -1,0 +1,4 @@
+RewriteEngine On
+
+RewriteRule ^product/(.*)$ product.php?slug=$1 [NC,l]
+ErrorDocument 404 "<H1>Page not found</H1>"

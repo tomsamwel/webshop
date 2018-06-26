@@ -16,6 +16,10 @@ Class DB {
 	private $limit = false;
 	private $dsn = '';
 
+	public function TomSays(){
+		echo 'urp deeeerrrrrr';
+	}
+
 	// connect to the DB
 	public function __construct()
 	{

@@ -14,7 +14,7 @@ require $root.'views/home.php';
 
 // make all urls complete
 function asset($path) {
-  return 'http://localhost/webshop/public/' . $path;
+  return 'http://localhost/webshop/views/' . $path;
 }
 
 //reset cart if empty
