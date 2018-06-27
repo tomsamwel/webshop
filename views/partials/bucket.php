@@ -30,5 +30,5 @@
 		</tfoot>
 	</table>
 
-	<a href="<?php echo asset('register.php'); ?>" class="btn btn-success">Order now</a>
+	<a href="<?= $RemoteBase .'public/register.php'; ?>" class="btn btn-success">Order now</a>
 </div>

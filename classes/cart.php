@@ -22,7 +22,6 @@ class Cart {
                 'id' => $product[0]->id
             ];
 
-
         }
 
         self::calculate();

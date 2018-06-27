@@ -1,4 +1,5 @@
-RewriteEngine On
+ErrorDocument 404 /webshop_final/public/404.html
 
-RewriteRule ^product/(.*)$ product.php?slug=$1 [NC,l]
-ErrorDocument 404 "<H1>Page not found</H1>"
+RewriteEngine On
+RewriteRule ^products/(.*)$ /webshop_final/public/product.php?slug=$1 [NC,l]
+RewriteRule ^register(.*)$ /webshop_final/public/register.php?$1 [NC,l]

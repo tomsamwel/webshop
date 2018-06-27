@@ -1,42 +1,12 @@
 <?php
-	require '../boot.php';
+	require '../bootstrap/boot.php';
 
-	$errors = [];
-
-	if($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-		$variables = [
-			'email' => ['required', 'email', 'min:7', 'max:155'],
-			'password' => ['required', 'min:8', 'max:100', 'confirmed'],
-			'first_name' => ['required', 'name', 'min:2', 'max:50'],
-			'suffix_name' => ['min:1', 'max:15', 'name'],
-			'last_name' => ['required', 'name', 'min:2', 'max:50'],
-			'country' => ['min:2', 'max:15', 'name'],
-			'city' => ['required', 'min:2', 'max:55', 'name'],
-			'street' => ['required', 'min:2', 'max:85', 'name'],
-			'street_number' => ['required', 'min:1', 'max:5'],
-			'street_suffix' => ['min:1', 'max:25'],
-			'zipcode' => ['required', 'postcode', 'min:6', 'max:7'],
-		];
-
-		require '../app/validation/validations.php';
-
-		if(count($errors) == 0) {
-			require '../app/payment/new.php';
-
-			dd(include 'partials/succes.php');
-		}
-
-	}
 	// dd($_POST);
 
 	function value($key)
 	{
 		return @$_POST[$key];
 	}
-
-
-
 
 ?>
 <!DOCTYPE html>
@@ -50,55 +20,95 @@
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-  	<link rel="stylesheet" type="text/css" href="public/css/style.css">
+  	<link rel="stylesheet" type="text/css" href="<?= $RemoteBase.'public/css/style.css'; ?>">
 </head>
 <body>
-	<?php require 'partials/navbar.php'; ?>
+	<?php include $LocalBase.'views/partials/navbar.php'; ?>
+
+	<aside class="bucket" id="bucket">
+		<?php include $LocalBase.'views/partials/bucket.php'; ?>
+	</aside>
+
 	<section class="content cont">
+		<?php
+
+		$errors = [];
+		if($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+			$variables = [
+				'email' => ['required', 'email', 'min:7', 'max:155'],
+				'password' => ['required', 'min:8', 'max:100', 'confirmed'],
+				'first_name' => ['required', 'name', 'min:2', 'max:50'],
+				'suffix_name' => ['min:1', 'max:15', 'name'],
+				'last_name' => ['required', 'name', 'min:2', 'max:50'],
+				'country' => ['min:2', 'max:15', 'name'],
+				'city' => ['required', 'min:2', 'max:55', 'name'],
+				'street' => ['required', 'min:2', 'max:85', 'name'],
+				'street_number' => ['required', 'min:1', 'max:5'],
+				'street_suffix' => ['min:1', 'max:25'],
+				'zipcode' => ['required', 'postcode', 'min:6', 'max:7'],
+			];
+
+
+
+			if(count($errors) == 0) {
+				require_once $LocalBase.'db/users.php';
+				$u = new users();
+				$u->SetAuthentication($_POST['password']);
+
+				require_once $LocalBase.'db/orders.php';
+				$o = new orders();
+				$o->save($u->id);
+				include $LocalBase.'views/partials/success.php';
+//				echo '<h1>Sucess</h1>';
+			}
+		}
+
+		?>
 		<h1>Sign up</h1>
 
 		<?php if(@$errors) { ?>
-			<div class="alert alert-danger">
+			<div class="alert alert-danger col-sm-3">
 				Oops, not everything is filled in correctly!
 			</div>
 		<?php } ?>
 
 		<form class="form-horizontal" action="" method="POST">
-
+			<input type="hidden" name="register" value="true" />
 			<div class="form-group">
 				<label class="col-sm-3 control-label">
-					Voornaam
+					First name
 				</label>
 				<div class="col-sm-2">
-					<input class="form-control" type="text" name="first_name" placeholder="Voornaam" value="<?php echo value('first_name'); ?>">
+					<input class="form-control" type="text" name="first_name" placeholder="First name" value="<?php echo value('first_name'); ?>">
 					<?php echo (@$errors['first_name']) ? '<p class="text-danger">'.$errors['first_name'][0].'</p>' : ''; ?>
 				</div>
 				<label class="col-sm-3 control-label">
-					Tussenvoegsel
+					Prefix
 				</label>
 				<div class="col-sm-2">
-					<input class="form-control" type="text" name="suffix_name" placeholder="Tussenvoegsel" value="<?php echo value('suffix_name'); ?>">
+					<input class="form-control" type="text" name="suffix_name" placeholder="Prefix" value="<?php echo value('suffix_name'); ?>">
 					<?php echo (@$errors['suffix_name']) ? '<p class="text-danger">'.$errors['suffix_name'][0].'</p>' : ''; ?>
 				</div>
 				<label class="col-sm-3 control-label">
-					Achternaam
+					Last name
 				</label>
 				<div class="col-sm-2">
-					<input class="form-control" type="text" name="last_name" placeholder="Achternaam" value="<?php echo value('last_name'); ?>">
+					<input class="form-control" type="text" name="last_name" placeholder="Last name" value="<?php echo value('last_name'); ?>">
 					<?php echo (@$errors['last_name']) ? '<p class="text-danger">'.$errors['last_name'][0].'</p>' : ''; ?>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-sm-3 control-label">
-					Land
+					Country
 				</label>
 				<div class="col-sm-2">
-					<select class="form-control" name="country" placeholder="Kies een land">
+					<select class="form-control" name="country" placeholder="Choose a county">
 						<?php foreach([
-							'NL' => 'Nederland',
-							'BE' => 'België',
-							'DE' => 'Deutschland'
+							'NL' => 'Netherlands',
+							'BE' => 'Belgium',
+							'DE' => 'Germany'
 						] as $iso => $country) { ?>
 						<option value="<?php echo $iso; ?>" <?php echo (value('country')) ? 'selected="selected"' : ''; ?>><?php echo $country; ?></option>
 						<?php } ?>
@@ -109,78 +119,78 @@
 
 			<div class="form-group">
 				<label class="col-sm-3 control-label">
-					Stad
+					City
 				</label>
 				<div class="col-sm-2">
-					<input class="form-control" type="text" name="city" placeholder="Stad" value="<?php echo value('city'); ?>">
+					<input class="form-control" type="text" name="city" placeholder="City" value="<?php echo value('city'); ?>">
 					<?php echo (@$errors['city']) ? '<p class="text-danger">'.$errors['city'][0].'</p>' : ''; ?>
 				</div>
 				<label class="col-sm-1 control-label">
-					Postcode
+					Postalcode
 				</label>
 				<div class="col-sm-2">
-					<input class="form-control" type="text" name="zipcode" placeholder="Postcode" value="<?php echo value('zipcode'); ?>">
+					<input class="form-control" type="text" name="zipcode" placeholder="Postalcode" value="<?php echo value('zipcode'); ?>">
 					<?php echo (@$errors['zipcode']) ? '<p class="text-danger">'.$errors['zipcode'][0].'</p>' : ''; ?>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-sm-3 control-label">
-					Straat
+					Street
 				</label>
 				<div class="col-sm-2">
-					<input class="form-control" type="text" name="street" placeholder="Straat" value="<?php echo value('street'); ?>">
+					<input class="form-control" type="text" name="street" placeholder="Street" value="<?php echo value('street'); ?>">
 					<?php echo (@$errors['street']) ? '<p class="text-danger">'.$errors['street'][0].'</p>' : ''; ?>
 				</div>
 				<label class="col-sm-3 control-label">
-					Huisnummer
+					Street number
 				</label>
 				<div class="col-sm-2">
-					<input class="form-control" type="text" name="street_number" placeholder="Huisnummer" value="<?php echo value('street_number'); ?>">
+					<input class="form-control" type="text" name="street_number" placeholder="Street number" value="<?php echo value('street_number'); ?>">
 					<?php echo (@$errors['street_number']) ? '<p class="text-danger">'.$errors['street_number'][0].'</p>' : ''; ?>
 				</div>
 				<label class="col-sm-3 control-label">
-					Toevoeging
+					Annex
 				</label>
 				<div class="col-sm-2">
-					<input class="form-control" type="text" name="street_suffix" placeholder="Toevoeging" value="<?php echo value('street_suffix'); ?>">
+					<input class="form-control" type="text" name="street_suffix" placeholder="Annex" value="<?php echo value('street_suffix'); ?>">
 					<?php echo (@$errors['street_suffix']) ? '<p class="text-danger">'.$errors['street_suffix'][0].'</p>' : ''; ?>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-sm-3 control-label">
-					E-mail adres
+					E-mail address
 				</label>
 				<div class="col-sm-2">
-					<input class="form-control" type="text" name="email" placeholder="E-mail adres" value="<?php echo value('email'); ?>">
+					<input class="form-control" type="text" name="email" placeholder="E-mail address" value="<?php echo value('email'); ?>">
 					<?php echo (@$errors['email']) ? '<p class="text-danger">'.$errors['email'][0].'</p>' : ''; ?>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-sm-3 control-label">
-					Wachtwoord
+					Password
 				</label>
 				<div class="col-sm-2">
-					<input class="form-control" type="password" name="password" placeholder="Wachtwoord" value="">
+					<input class="form-control" type="password" name="password" placeholder="Password" value="">
 					<?php echo (@$errors['password']) ? '<p class="text-danger">'.$errors['password'][0].'</p>' : ''; ?>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-sm-3 control-label">
-					Herhaal wachtwoord
+					Repeat password
 				</label>
 				<div class="col-sm-2">
-					<input class="form-control" type="password" name="password_confirmed" placeholder="Wachtwoord bevestigen" value="">
+					<input class="form-control" type="password" name="password_confirmed" placeholder="Password" value="">
 					<?php echo (@$errors['password_confirmed']) ? '<p class="text-danger">'.$errors['password_confirmed'][0].'</p>' : ''; ?>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="col-sm-9 col-sm-offset-3">
-					<button type="submit" class="btn btn-primary">Verstuur</button>
+					<button type="submit" class="btn btn-primary">Sign up and order now!</button>
 				</div>
 			</div>
 

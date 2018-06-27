@@ -1,7 +1,7 @@
 <?php
 
 Class DB {
-
+	//change db configuation here
 	private $connection	= null;
 	private $class = null;
 	private $host = 'localhost';
@@ -16,10 +16,6 @@ Class DB {
 	private $limit = false;
 	private $dsn = '';
 
-	public function TomSays(){
-		echo 'urp deeeerrrrrr';
-	}
-
 	// connect to the DB
 	public function __construct()
 	{
@@ -28,11 +24,17 @@ Class DB {
 			$this->connection = new PDO($this->dsn, $this->username, $this->password);
 			$this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
+		//dislay errormessage
 		catch(PDOException $e) {
 			dd($e->getMessage());
 		}
 
 		return $this;
+	}
+
+	//return the connection
+	public function getConnection(){
+		return $this->connection;
 	}
 
 	public function __destruct(){
