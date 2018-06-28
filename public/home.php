@@ -20,6 +20,7 @@
   </aside>
 
   <?php
+    //query all products
     $db->query('SELECT * FROM `products` ');
     $products = $db->select('products');
 

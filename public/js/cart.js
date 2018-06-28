@@ -6,6 +6,7 @@ function UpdateCart(json, status, xhr){
   }
 }
 
+//add
 function AddProduct(e){
   var product_id = $(e.target).data('product'); //Get the product id
 
@@ -19,7 +20,7 @@ function AddProduct(e){
   });
 }
 
-
+//delete
 function DeleteProduct(e){
   var product_id = $(e.target).data('product');
 

@@ -1,8 +1,6 @@
 <?php
 	require '../bootstrap/boot.php';
 
-	// dd($_POST);
-
 	function value($key)
 	{
 		return @$_POST[$key];
@@ -50,16 +48,16 @@
 			];
 
 
-
+			//run this if the forum is filled in correctly
 			if(count($errors) == 0) {
 				require_once $LocalBase.'db/users.php';
 				$u = new users();
-				$u->SetAuthentication($_POST['password']);
+				$u->SetAuthentication($_POST['password']); //hash password and save user to db
 
 				require_once $LocalBase.'db/orders.php';
 				$o = new orders();
-				$o->save($u->id);
-				include $LocalBase.'views/partials/success.php';
+				$o->save($u->id); //saves order to orders table and orders_products table
+				include $LocalBase.'views/partials/success.php'; 
 //				echo '<h1>Sucess</h1>';
 			}
 		}

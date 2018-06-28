@@ -64,7 +64,7 @@ Class users {
         $this->password = password_hash($tkn, PASSWORD_BCRYPT, ['cost' => 11]);
         $this->save();
     }
-
+    //in case of a functioning login
     static function Logout()
     {
         global $SessionName;
@@ -81,19 +81,20 @@ Class users {
             session_destroy();
             unset($_SESSION);
     }
+    //function for authenticating login password
     function Authenticate($auth_token)
     {
         $tkn=$auth_token.sprintf(crc32($this->email.$this->created_at),'%x') ;
         if( password_verify($tkn, $this->password) ) return true;
         else exit('{ "error" : "Authentication Failed" }');
     }
-
+    //prepping postalcode for db
     function standardizePostcode($postcode)
     {
         return strtoupper(chunk_split($postcode, 4, ' '));
     }
 
-
+    //prepping names for db
     function standardizeName($string)
     {
         return ucfirst(trim($string));
