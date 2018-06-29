@@ -1,8 +1,10 @@
 <?php
 
-session_start();
+if (session_status() === PHP_SESSION_NONE){
+        @session_start();
+    }
 
-require_once __DIR__.'/../classes/cart.php';
+require_once '../classes/cart.php';
 
 //check for json
 if(isset($_REQUEST['json']))  $json =json_decode($_REQUEST['json'], true);
@@ -24,7 +26,7 @@ function AddProduct($json){
     Cart::addToCart( $json['id']);
 
     ob_start();                        // capture html from bucket partial
-    require __DIR__.'/../views/partials/bucket.php';
+    require '../views/partials/bucket.php';
     $ret_json['bucket'] = ob_get_clean();   // put bucket partial into return json
     echo json_encode($ret_json);          // send json back to javascript
 }
@@ -33,7 +35,7 @@ function DeleteProduct($json){
     Cart::removeFromCart( $json['id'] );
 
     ob_start();                        // capture html from bucket partial
-    require __DIR__.'/../views/partials/bucket.php';
+    require '../views/partials/bucket.php';
     $ret_json['bucket'] = ob_get_clean();   // put bucket partial into return json
     echo json_encode($ret_json);          // send json back to javascript
 }

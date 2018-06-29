@@ -1,3 +1,6 @@
+<?php
+	require_once __DIR__.'/../../bootstrap/boot.php';
+?>
 <h2>Cart</h2>
 <div class="bucket-content">
 	<table class="table">
@@ -30,5 +33,5 @@
 		</tfoot>
 	</table>
 
-	<a href="<?= $RemoteBase .'public/register.php'; ?>" class="btn btn-success">Order now</a>
+	<a href="<?= asset('register.php') ;?>" class="btn btn-success">Order now</a>
 </div>

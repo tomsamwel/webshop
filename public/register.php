@@ -1,6 +1,7 @@
 <?php
 	require '../bootstrap/boot.php';
 
+
 	function value($key)
 	{
 		return @$_POST[$key];
@@ -18,13 +19,13 @@
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-  	<link rel="stylesheet" type="text/css" href="<?= $RemoteBase.'public/css/style.css'; ?>">
+  	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-	<?php include $LocalBase.'views/partials/navbar.php'; ?>
+	<?php include '../views/partials/navbar.php'; ?>
 
 	<aside class="bucket" id="bucket">
-		<?php include $LocalBase.'views/partials/bucket.php'; ?>
+		<?php include '../views/partials/bucket.php'; ?>
 	</aside>
 
 	<section class="content cont">
@@ -47,17 +48,18 @@
 				'zipcode' => ['required', 'postcode', 'min:6', 'max:7'],
 			];
 
+			require '../app/validation/validations.php';
 
 			//run this if the forum is filled in correctly
 			if(count($errors) == 0) {
-				require_once $LocalBase.'db/users.php';
+				require_once '../db/users.php';
 				$u = new users();
 				$u->SetAuthentication($_POST['password']); //hash password and save user to db
 
-				require_once $LocalBase.'db/orders.php';
+				require_once '../db/orders.php';
 				$o = new orders();
 				$o->save($u->id); //saves order to orders table and orders_products table
-				include $LocalBase.'views/partials/success.php'; 
+				include '../views/partials/success.php';
 //				echo '<h1>Sucess</h1>';
 			}
 		}

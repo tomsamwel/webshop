@@ -1,3 +1,9 @@
+var RemoteBase = window.location.hostname;
+var isPublic = false;
+// change this on the page with
+// echo 'var RemoteBase = ' . Http::webroot();
+// <script src="cart.js"> before this line ^
+
 function UpdateCart(json, status, xhr){
   if(json.bucket) {
       $('#bucket').html(json.bucket);
@@ -12,7 +18,7 @@ function AddProduct(e){
 
   var DataToSend = { "id": product_id, "command": "add" };  //get json ready to send with AJAX
   $.ajax({
-    url: 'http://localhost/webshop_final/app/ajax.php',
+    url: RemoteBase + (isPublic ? '../':'')+'app/ajax.php',
     type: "post",
     data: { json: JSON.stringify(DataToSend) },
     dataType: "json",
@@ -26,7 +32,7 @@ function DeleteProduct(e){
 
   var DataToSend = { "id": product_id, "command": "del" };
   $.ajax({
-    url: 'http://localhost/webshop_final/app/ajax.php',
+    url: RemoteBase + (isPublic ? '../':'')+'app/ajax.php',
     type: "post",
     data: { json: JSON.stringify(DataToSend) },
     dataType: "json",

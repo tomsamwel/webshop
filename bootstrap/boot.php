@@ -1,13 +1,25 @@
 <?php
 
-session_start();
+if (session_status() === PHP_SESSION_NONE){
+        @session_start();
+    }
 
-global $RemoteBase;
-$RemoteBase = 'http://localhost/webshop_final/';
+// global $RemoteBase;
+// $RemoteBase = 'http://localhost/webshop_final/';
+// $LocalBase = __DIR__ . '/../';
 
-$LocalBase = __DIR__ . '/../';
-require_once $LocalBase.'classes/db.php';
-require_once $LocalBase.'classes/cart.php';
+//have it your way matthijs! >_>;;
+require_once '../classes/http.php';
+Http::boot();
+
+function asset($path) {
+    return Http::webroot() .$path;
+}
+
+
+require_once '../classes/db.php';
+require_once '../classes/cart.php';
+
 
 
 //reset cart if empty

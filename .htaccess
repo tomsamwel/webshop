@@ -1,5 +1,0 @@
-ErrorDocument 404 /webshop_final/public/404.html
-
-RewriteEngine On
-RewriteRule ^products/(.*)$ /webshop_final/public/product.php?slug=$1 [NC,l]
-RewriteRule ^register(.*)$ /webshop_final/public/register.php?$1 [NC,l]
